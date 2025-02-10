@@ -1,4 +1,4 @@
-# Microsoft Assignment
+# DevOps Challenge
 
 This project demonstrates the build and deployment of a simple application using Terraform, GitHub Actions, and Docker. The workflow involves automating the infrastructure provisioning, building a Docker image, and deploying it to an AWS EC2 instance.
 
@@ -44,7 +44,7 @@ The primary goal of this project is to demonstrate a CI/CD pipeline for a Docker
 2. Plan and apply the configuration:
    ```bash
    terraform plan
-   terraform apply -var "image_tag=latest" -var "ecr_repository=danielcarmel/microsoft-assignment"
+   terraform apply -var "image_tag=latest" -var "ecr_repository=danielcarmel/devops-challenge"
    ```
 
 3. Terraform provisions an EC2 instance with the defined configuration and connects it to RDS sql server.
@@ -92,8 +92,8 @@ The application is containerized using Docker for consistency and portability.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/DanielCarmel/microsoft-assignment.git
-   cd microsoft-assignment
+   git clone https://github.com/DanielCarmel/devops-challenge.git
+   cd devops-challenge
    ```
 
 2. Set up Terraform and provision infrastructure.
