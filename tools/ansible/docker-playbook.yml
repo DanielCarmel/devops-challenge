@@ -1,0 +1,33 @@
+- name: Deploy Docker-Compose Application
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Install Docker-Compose
+      apt:
+        name: docker-compose
+        state: present
+
+    - name: Create project directory
+      file:
+        path: /opt/project
+        state: directory
+
+    - name: Copy application files
+      copy:
+        src: "{{ item }}"
+        dest: /opt/project/
+        remote_src: no
+      with_items:
+        - docker-compose.yml
+        - web
+
+    - name: Deploy application with Docker-Compose
+      command: docker-compose up -d
+      args:
+        chdir: /opt/project/

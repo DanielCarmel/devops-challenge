@@ -1,0 +1,46 @@
+@Library('library-name') _
+
+pipeline {
+    agent any
+    environment {
+        ARTIFACT_NAME = "my-artifact.jar"
+    }
+    stages {
+        stage('Prepare env') {
+            steps {
+                script {
+                    def scmParams = [
+                        committer: env.CHANGE_AUTHOR ?: 'unknown',
+                        branch: env.BRANCH_NAME ?: 'main'
+                    ]
+                    prepareEnv(scmParams)
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                echo "Building artifact..."
+                sh './gradlew build'
+            }
+        }
+        stage('Package') {
+            steps {
+                echo "Packaging artifact..."
+                sh "tar -czf ${ARTIFACT_NAME}.tar.gz build/libs/${ARTIFACT_NAME}"
+            }
+        }
+        stage('Upload to Repository') {
+            steps {
+                echo "Uploading artifact to repository..."
+                sh """
+                    curl -u user:password -T ${ARTIFACT_NAME}.tar.gz http://your-repo-url/${ARTIFACT_NAME}.tar.gz
+                """
+            }
+        }
+    }
+    post {
+        always {
+            echo "Pipeline completed."
+        }
+    }
+}
